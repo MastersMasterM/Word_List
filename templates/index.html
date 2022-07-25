@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Word List</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center">Word List</h1>
+    {% if tasks|length < 1 %}
+    <h4 style="text-align: center">There are no words.Add one below</h4>
+    {% else %}
+    <table>
+        <tr>
+            <th>Word</th>
+            <th>Definition</th>
+            <th>Example</th>
+            <th>Learnt</th>
+            <th>Added</th>
+            <th>Actions</th>
+        </tr>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.word }}</td>
+                <td>{{ task.definition }}</td>
+                <td>{{ task.examples }}</td>
+                {% if task.need_rev == 1 %}
+                <td>"Revising is needed"</td>
+                {% else %}
+                <td>"Had Learned"</td>
+                {% endif %}
+                <td>{{ task.date_created.date() }}</td>
+                <td>
+                    <a href="/forget/{{task.id}}">Forget</a>
+                    <br>
+                    <a href="/rev/{{task.id}}">Learned</a>
+                    <br>
+                    <a href="/delete/{{task.id}}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <form action="/" method="POST">
+        <label for="word">Word:</label>
+        <input type="text" name="word" id="word">
+        <br>
+        <label for="definition">Definition:</label>
+        <input type="text" name="definition" id="definition">
+        <br>
+        <label for="examples">Example:</label>
+        <input type="text" name="examples" id="examples">
+        <br>
+        <input type="submit" value="Add Word">
+    </form>
+</div>
+{% endblock %}
