@@ -14,11 +14,13 @@ class Todo(db.Model):
     word = db.Column(db.String(200),nullable=False) #Word
     definition = db.Column(db.String(200),nullable=False) #Def
     examples = db.Column(db.String(200),nullable=False) #Ex
-    need_rev = db.Column(db.Integer,default = 1) #Need review or not
+    need_rev = db.Column(db.Integer,default = 0) #Need review or not
     date_created = db.Column(db.DateTime,default=datetime.utcnow)
 
     def __rep__(self):
         return f'Word {self.id}'
+
+
 @app.route('/', methods=['POST','GET'])
 def index():
     if request.method=='POST':
@@ -34,8 +36,11 @@ def index():
         except:
             return "There was an issue adding the word"
     else:
-        tasks = Todo.query.order_by(Todo.date_created).all()
+        tasks = Todo.query.filter_by(need_rev=0).all()
+
         return render_template('index.html',tasks=tasks)
+
+
 @app.route('/delete/<int:id>')
 def delete(id):
     task_to_delete = Todo.query.get_or_404(id)
@@ -55,6 +60,8 @@ def learnt(id):
         return redirect("/")
     except:
         return "There was a problem adding the word to the learnt group"
+
+
 @app.route('/forget/<int:id>')
 def forget(id):
     forger_word = Todo.query.get_or_404(id)
@@ -64,5 +71,27 @@ def forget(id):
         return redirect("/")
     except:
         return "There was a problem removing the word to the learnt group"
+
+
+@app.route('/known/<int:id>')
+def known(id):
+    known_word = Todo.query.get_or_404(id)
+    try:
+        known_word.need_rev = 2
+        db.session.commit()
+        return redirect("/")
+    except:
+        return "There was a problem removing the word to the learnt group"
+@app.route('/p_known/')
+def update():
+        tasks = Todo.query.filter_by(need_rev=2).all()
+        return render_template('index.html',tasks=tasks)
+@app.route('/p_rev/')
+def rev():
+    return redirect("/")
+@app.route('/p_unknown/')
+def unkn():
+        tasks = Todo.query.filter_by(need_rev=1).all()
+        return render_template('index.html',tasks=tasks)
 if __name__ == '__main__':
     app.run(debug=True)
