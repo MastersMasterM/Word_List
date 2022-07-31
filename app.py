@@ -94,4 +94,4 @@ def unkn():
         tasks = Todo.query.filter_by(need_rev=1).all()
         return render_template('index.html',tasks=tasks)
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
