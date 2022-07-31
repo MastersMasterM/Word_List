@@ -40,22 +40,32 @@
         {% endfor %}
     </table>
     {% endif %}
+    <table border="0" align="top">
+        <tr>
+            <h2>Choose your list</h2>
+            </tr>
+            <tr>
+            <td><a href ="/p_known/">Known</a></td>
+            <td><a href ="/p_rev/">Review</a></td>
+            <td><a href="/p_unknown/">Unknown</a></td>
+        </tr>
     <form action="/" method="POST">
-        <label for="word">Word:</label>
-        <input type="text" name="word" id="word">
-        <br>
-        <label for="definition">Definition:</label>
-        <input type="text" name="definition" id="definition">
-        <br>
-        <label for="examples">Example:</label>
-        <input type="text" name="examples" id="examples">
-        <br>
-        <input type="submit" value="Add Word">
+        <tr>
+        <td><label for="word">Word:</label></td>
+        <td colspan="2"><input type="text" name="word" id="word"></td>
+        </tr>
+        <tr>
+        <td><label for="definition">Definition:</label></td>
+        <td colspan="2"><input type="text" name="definition" id="definition"></td>
+        </tr>
+        <tr>
+        <td><label for="examples">Example:</label></td>
+        <td colspan="2"><input type="text" name="examples" id="examples"></td>
+        </tr>
+        <tr>
+        <td colspan="3"><input type="submit" value="Add Word"></td>
+        </tr>
     </form>
-    <a href ="/p_known/">Known</a>
-    <br>
-    <a href ="/p_rev/">Review</a>
-    <br>
-    <a href="/p_unknown/">Unknown</a>
+    </table>
 </div>
 {% endblock %}
